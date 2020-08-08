@@ -1,6 +1,6 @@
 import { parseRawCSVData } from "./csv.ts";
 import type { CityBuilder } from "./@types/city-builder.ts";
-
+console.log("running");
 const path = Deno.args[0];
 
 if(!path){
