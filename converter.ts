@@ -1,6 +1,8 @@
 import { parseRawCSVData } from "./csv.ts";
 import type { CityBuilder } from "./@types/city-builder.ts";
-console.log("running");
+
+import { generateKey } from "./utils/cities-builder.utils.ts";
+
 const path = Deno.args[0];
 
 if(!path){
@@ -15,4 +17,11 @@ const [,columns,...data] = parseRawCSVData(rawData);
 
 const transformed: CityBuilder[] = data.map(row => row.reduce((acc, cur, i) => ({...acc, [columns[i]]: cur}), {})) as CityBuilder[];
 
-console.log(transformed.filter(({areaCode}) => Boolean(areaCode)));
+// for each line generate a unique key
+// there will be duplicates... but that's ok
+
+const res = transformed
+.filter(row => row.country && row.city && row.region)
+.map(row => [generateKey(row), row]);
+
+console.log(res);
